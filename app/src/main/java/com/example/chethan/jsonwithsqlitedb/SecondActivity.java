@@ -186,10 +186,7 @@ public class SecondActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull SecHolder secHolder, int i) {
 
-            secHolder.page.setText(PageLst.get(i));
-            secHolder.per_page.setText(Per_PageLst.get(i));
-            secHolder.total.setText(TotalLst.get(i));
-            secHolder.total_pages.setText(Total_page_Lst.get(i));
+
 
             secHolder.id.setText(IDLst.get(i));
             secHolder.name.setText(NameLst.get(i));
@@ -198,11 +195,19 @@ public class SecondActivity extends AppCompatActivity {
             secHolder.value.setText(ValueLst.get(i));
 
 
+
+
+            secHolder.page.setText(PageLst.get(i));
+            secHolder.per_page.setText(Per_PageLst.get(i));
+            secHolder.total.setText(TotalLst.get(i));
+            secHolder.total_pages.setText(Total_page_Lst.get(i));
+
+
         }
 
         @Override
         public int getItemCount() {
-            return PageLst.size();
+            return NameLst.size();
         }
 
         public class SecHolder extends RecyclerView.ViewHolder{
