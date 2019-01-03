@@ -1,6 +1,7 @@
 package com.example.chethan.jsonwithsqlitedb;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.chethan.jsonwithsqlitedb.DataBase.DBClass;
@@ -101,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
                 connection.setRequestMethod("GET");
                 connection.setDoInput(true);
 
-                InputStream inputStream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                InputStream inputStream1 = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream1));
                 builder = new StringBuilder();
                 String line = "";
 
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("Line:"+line);
                 }
 
-                inputStream.close();
+                inputStream1.close();
 
                 String jsonStr = builder.toString();
 
@@ -210,6 +212,18 @@ public class MainActivity extends AppCompatActivity {
             jsonHolder.value.setText(ValueLst.get(i));
 
 
+            jsonHolder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    finish();
+
+                }
+            });
+
 
         }
 
@@ -222,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
 
             private TextView name,id,year,color,value;
 
+            LinearLayout layout;
+
 
             public JSONHolder(@NonNull View v) {
                 super(v);
@@ -231,6 +247,8 @@ public class MainActivity extends AppCompatActivity {
                 year = v.findViewById(R.id.disp_year);
                 color = v.findViewById(R.id.disp_color);
                 value = v.findViewById(R.id.disp_value);
+
+                layout = v.findViewById(R.id.layout_id);
             }
         }
     }
