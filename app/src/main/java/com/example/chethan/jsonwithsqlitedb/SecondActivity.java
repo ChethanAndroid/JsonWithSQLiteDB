@@ -46,6 +46,10 @@ public class SecondActivity extends AppCompatActivity {
     List<String> ColorLst = new ArrayList<>();
     List<String> ValueLst = new ArrayList<>();
 
+    HttpURLConnection conn = null;
+    StringBuilder builder = null;
+
+    String jsonString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,29 +88,34 @@ public class SecondActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... strings) {
 
-            HttpURLConnection connection = null;
-            StringBuilder builder = null;
+//            HttpURLConnection connection = null;
+//            StringBuilder builder = null;
 
             try {
-                URL url = new URL(ServerLinkPojo.getSecLink());
-                connection = (HttpURLConnection)url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setDoInput(true);
 
-                InputStream inputStream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                builder = new StringBuilder();
-                String line ="";
 
-                while ((line = reader.readLine())!=null){
-                    builder.append(line);
-                    System.out.println("Line:"+line);
+//                URL url = new URL(ServerLinkPojo.getSecLink());
+//                connection = (HttpURLConnection)url.openConnection();
+//                connection.setRequestMethod("GET");
+//                connection.setDoInput(true);
+//
+//                InputStream inputStream = connection.getInputStream();
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//                builder = new StringBuilder();
+//                String line ="";
+//
+//                while ((line = reader.readLine())!=null){
+//                    builder.append(line);
+//                    System.out.println("Line:"+line);
+//
+//                }
+//
+//                inputStream.close();
+//
+//                String jsonString = builder.toString();
 
-                }
+                urlconnection();
 
-                inputStream.close();
-
-                String jsonString = builder.toString();
 
                 if (jsonString!=null){
 
@@ -119,8 +128,10 @@ public class SecondActivity extends AppCompatActivity {
                  TotalLst.add(object.getString("total"));
                  Total_page_Lst.add(object.getString("total_pages"));
 
-                    System.out.println("PageSize:"+PageLst.size());
-                    System.out.println("Page:"+PageLst);
+                    System.out.println("PageSize:"+PageLst);
+                    System.out.println("per_page:"+Per_PageLst);
+                    System.out.println("Total:"+TotalLst);
+                    System.out.println("Total_page_Lst:"+Total_page_Lst);
 
 //                    JSONObject objectJSONObject = object.getJSONObject("data");
 
@@ -150,10 +161,6 @@ public class SecondActivity extends AppCompatActivity {
 
 
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -169,8 +176,47 @@ public class SecondActivity extends AppCompatActivity {
 
             secAdapter.notifyDataSetChanged();
         }
+
     }
 
+
+    public void urlconnection(){
+
+        try {
+
+
+            URL url = new URL(ServerLinkPojo.getSecLink());
+            conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+
+            InputStream inputStream = conn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            builder = new StringBuilder();
+            String line = "";
+
+            while ((line = reader.readLine())!=null){
+                builder.append(line);
+
+                System.out.println("line:"+line);
+            }
+
+            inputStream.close();
+
+             jsonString = builder.toString();
+
+            System.out.println("json:"+jsonString);
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
 
     public class SecAdapter extends RecyclerView.Adapter<SecAdapter.SecHolder>{
@@ -188,19 +234,33 @@ public class SecondActivity extends AppCompatActivity {
 
 
 
+
+
             secHolder.id.setText(IDLst.get(i));
             secHolder.name.setText(NameLst.get(i));
             secHolder.year.setText(YearLst.get(i));
             secHolder.color.setText(ColorLst.get(i));
             secHolder.value.setText(ValueLst.get(i));
 
+            System.out.println("IDLST:"+secHolder.id.getText().toString());
+            System.out.println("nameLST:"+secHolder.name.getText().toString());
+
+            System.out.println("Page:"+PageLst.get(0));
+            System.out.println("Per_Page:"+Per_PageLst.get(0));
+            System.out.println("Total:"+TotalLst.get(0));
+            System.out.println("Total_page_Lst:"+Total_page_Lst.get(0));
+
+            secHolder.page.setText(PageLst.get(0));
+            System.out.println("Page:"+secHolder.page.getText().toString());
 
 
 
-            secHolder.page.setText(PageLst.get(i));
-            secHolder.per_page.setText(Per_PageLst.get(i));
-            secHolder.total.setText(TotalLst.get(i));
-            secHolder.total_pages.setText(Total_page_Lst.get(i));
+
+            secHolder.per_page.setText(Per_PageLst.get(0));
+            secHolder.total.setText(TotalLst.get(0));
+            secHolder.total_pages.setText(Total_page_Lst.get(0));
+
+
 
 
         }
